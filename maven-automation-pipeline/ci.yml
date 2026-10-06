@@ -1,0 +1,25 @@
+name: DevOpsJavaCIAutomationPipeline
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+jobs:
+  build-and-validate:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        java-version: [17, 21]
+
+    steps:
+    - name: CheckoutSourceCode
+      uses: actions/checkout@v4
+    - name: SetupJDK${{ matrix.java-version }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+        cache: 'maven'
+    - name: RunAutomatedTestSuites
+      run: mvn test
