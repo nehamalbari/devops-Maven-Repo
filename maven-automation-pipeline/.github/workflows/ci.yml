@@ -23,3 +23,14 @@ jobs:
         cache: 'maven'
     - name: RunAutomatedTestSuites
       run: mvn test
+  deploy-staging: 
+    needs: build-and-validate 
+    runs-on: ubuntu-latest 
+    environment: staging 
+    steps: 
+    - name: Checkout Source Code 
+      uses: actions/checkout@v4 
+    - name: Deploy to Staging Container 
+      run: | 
+        echo "Approval granted! Deploying to staging stack..." 
+        docker-compose up -d 
